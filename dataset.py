@@ -105,6 +105,7 @@ class DatasetDUg():
             yield (x[idxs], y[idxs], idxs)
 
 
+
 # class MNIST(Dataset):
 #     def __init__(self):
 #         super().__init__()
@@ -115,5 +116,18 @@ class DatasetDUg():
 #         self.test_x = self.test_x*0.02
 #         self.num_classes = 10
 #         self.feature_dim = 784
+
+
+def minibatches(inputs=None, targets=None, batch_size=None, shuffle=False):
+    assert len(inputs) == len(targets)
+    if shuffle: 
+        indices = np.arange(len(inputs)) 
+        np.random.shuffle(indices)  
+    for start_idx in range(0, len(inputs) - batch_size + 1, batch_size):  
+        if shuffle:
+            excerpt = indices[start_idx:start_idx + batch_size] 
+        else:
+            excerpt = slice(start_idx, start_idx + batch_size)  
+        yield inputs[excerpt], targets[excerpt]  # 提取相应的样本数据和标签数据
 
 
