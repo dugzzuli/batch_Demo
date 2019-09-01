@@ -1,18 +1,25 @@
 import tensorflow as tf
 import numpy as np
 import random
-def shuffle_set(train_image, train_label, test_image, test_label):
-    train_row = range(len(train_label))
-    random.shuffle(train_row)
-    train_image = train_image[train_row]
-    train_label = train_label[train_row]
-    
-    test_row = range(len(test_label))
-    random.shuffle(test_row)
-    test_image = test_image[test_row]
-    test_label = test_label[test_row]
-    return train_image, train_label, test_image, test_label
+from dataset import DatasetDUg
 
-train_image, train_label, test_image, test_label=np.ones([1000,10]),np.ones([1000,1]),np.ones([1000,10]),np.ones([1000,1])
+class MNIST(DatasetDUg):
+    def __init__(self):
+        super().__init__()
+        (self.train_x, self.train_y), (self.test_x, self.test_y) = tf.keras.datasets.mnist.load_data()
+        self.train_x = self.train_x.reshape(-1, self.train_x.shape[1]*self.train_x.shape[2])
+        self.train_x = self.train_x*0.02
+        self.test_x = self.test_x.reshape(-1, self.test_x.shape[1]*self.test_x.shape[2])
+        self.test_x = self.test_x*0.02
+        self.num_classes = 10
+        self.feature_dim = 784
 
-train_image2, train_label2, test_image2, test_label2=shuffle_set(train_image, train_label, test_image, test_label)
+batch_size=10000
+data=MNIST()
+index=0
+for iter_, (batch_x, batch_y, batch_idxs) in enumerate(data.gen_next_batch(batch_size=batch_size,is_train_set=True, epoch=3)):
+
+    print(index)
+    index=index+1
+
+

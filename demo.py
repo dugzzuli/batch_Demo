@@ -4,7 +4,7 @@ graph=dataset.Dataset()
 
 batch_size=64
 while True:
-    mini_batch = graph.sample(batch_size, do_shuffle=False, with_label=True)
+    mini_batch = graph.sample(batch_size, do_shuffle=False, with_label=False)
     print(np.shape(mini_batch.V1))
     if graph.is_epoch_end:
         break
